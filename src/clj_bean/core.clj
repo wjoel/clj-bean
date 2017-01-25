@@ -27,6 +27,7 @@
 (defn typed-field->accessors
   [[type name] class-name [type-array-index field-index]]
   (let [prefix (->prefix class-name)
+        object? (nil? type-array-index)
         sym-name (sym->upcase-1-str name)
         value-sym (tagged-sym name type)
         this-sym (tagged-sym "this" class-name)
@@ -34,19 +35,23 @@
         array-sym (tagged-sym "type-array" (t/array type))]
     `((defn ~(symbol (str prefix "get" sym-name)) [~this-sym]
         (let [~state-sym (.state ~this-sym)
-              ~array-sym (aget ~state-sym ~type-array-index)]
-          (aget ~array-sym ~field-index)))
+              ~@(when-not object?
+                  [array-sym (list `aget state-sym type-array-index)])]
+          (aget ~(if object? state-sym array-sym) ~field-index)))
       (defn ~(symbol (str prefix "set" sym-name)) [~this-sym ~(symbol name)]
         (let [~state-sym (.state ~this-sym)
-              ~array-sym (aget ~state-sym ~type-array-index)]
-          (aset ~array-sym ~field-index ~value-sym))))))
+              ~@(when-not object?
+                  [array-sym (list `aget state-sym type-array-index)])]
+          (aset ~(if object? state-sym array-sym) ~field-index ~value-sym))))))
 
 (defn coordinate-map
   "The bean's state is an (object) array of arrays. There is one array for
-  each primitive type, and one array for non-primitive types. Each field can
-  be looked up by finding the index of the array for its type, and then
-  indexing that array with the field's index within it.
+  each primitive type, and one element for object fields. Each primitive field
+  can be looked up by the index of the array for its type, and then indexing
+  that array with the field's index within it.
+  Object fields can be found through their index in the object array.
   In short, each field has a two-dimensional coordinate in the bean's state.
+  The first coordinate of object fields will be nil.
   This function returns a map from the field's symbol to its coordinates."
   [type->fields]
   (let [type->state-index (->> (map vector (sort (keys type->fields)) (range))
@@ -64,9 +69,10 @@
   (let [array-type (symbol (str "clojure.core/" (name type) "-array"))]
     `(~array-type [~@fields])))
 
-(defn initial-state-value [type->fields]
-  (->> (map typed-fields->initializer type->fields)
-       (sort-by first)))
+(defn initial-state-value [type->fields object-fields]
+  (concat (->> (map typed-fields->initializer type->fields)
+               (sort-by first))
+          object-fields))
 
 (defmacro defbean
   "Generates a Java bean. The fields are a set of field type and name."
@@ -83,10 +89,13 @@
         type->fields (->> (filter #(t/primitive? (first %)) typed-fields)
                           (reduce (fn [m [type name]]
                                     (assoc m type (conj (m type) name)))
-                                  {'object object-fields})
-                          (reduce-kv (fn [m k v] (assoc m k (sort v)))))
-        initial-state-initializer (initial-state-value type->fields)
-        name->coordinate (coordinate-map type->fields)
+                                  {})
+                          (reduce-kv (fn [m k v] (assoc m k (sort v))) {}))
+        initial-state-initializer (initial-state-value type->fields object-fields)
+        name->coordinate (->> (map vector object-fields (range))
+                              (reduce (fn [m [field index]]
+                                        (assoc m field [nil (+ (count type->fields) index)]))
+                                      (coordinate-map type->fields)))
         method-decls (mapcat typed-field->declarations typed-fields)
         method-impls (mapcat (fn [[type name :as typed-field]]
                                (typed-field->accessors typed-field class-name

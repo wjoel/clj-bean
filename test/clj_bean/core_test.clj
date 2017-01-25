@@ -40,19 +40,23 @@
                (clojure.core/let [state (.state this)
                                   type-array (clojure.core/aget state 1)]
                  (clojure.core/aset type-array 2 byteDiff))))
-           (typed-field->accessors '[Long byteDiff] "com.wjoel.bean.edit" [1 2])))))
+           (typed-field->accessors '[Long byteDiff] "com.wjoel.bean.edit" [1 2])))
+    (is (= '((clojure.core/defn edit-getChannel [this]
+               (clojure.core/let [state (.state this)]
+                 (clojure.core/aget state 3)))
+             (clojure.core/defn edit-setChannel [this channel]
+               (clojure.core/let [state (.state this)]
+                 (clojure.core/aset state 3 channel))))
+           (typed-field->accessors '[String channel] "com.wjoel.bean.edit" [nil 3])))))
 
 (deftest coordinate-map-test
   (testing "creation of coordinate map"
     (is (= '{byteDiff [1 0]
              timestamp [1 1]
-             channel [2 0]
-             title [2 1]
              isMinor [0 0]
              isNew [0 1]
              isUnpatrolled [0 2]}
            (coordinate-map '{long [byteDiff timestamp]
-                             object [channel title]
                              boolean [isMinor isNew isUnpatrolled]})))
     (is (= '{byteDiff [0 0]
              timestamp [0 1]
