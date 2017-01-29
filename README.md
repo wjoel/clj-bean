@@ -25,6 +25,9 @@ wanted.
    [boolean isTalk]])
 ```
 
+Note that you need to use an [AOT-compiled namespace](https://clojure.org/reference/compilation)
+with `defbean` to generate the necessary Java class files.
+
 ## License
 
 Copyright © 2017 Joel Wilsson
