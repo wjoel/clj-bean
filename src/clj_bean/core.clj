@@ -107,7 +107,6 @@
                                (typed-field->accessors typed-field class-name
                                                        (name->coordinate name)))
                              typed-fields)
-        initial-state (gensym "initial-state")
         init-sym (symbol (str prefix "init"))
         null-constructor-values (map t/default-value types)]
     `(do
