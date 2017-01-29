@@ -85,14 +85,20 @@
         names (map second typed-fields)
         object-fields (->> (filter #(not (t/primitive? (first %))) typed-fields)
                            (map second)
+                           ;; sort alphabetically by name
                            sort)
         type->fields (->> (filter #(t/primitive? (first %)) typed-fields)
+                          ;; collect into {'type1 [field1 field2 ...]
+                          ;;               'type2 [field4 field5 ...]}
                           (reduce (fn [m [type name]]
                                     (assoc m type (conj (m type) name)))
                                   {})
+                          ;; sort [field1 field2 ...] alphabetically
                           (reduce-kv (fn [m k v] (assoc m k (sort v))) {}))
         initial-state-initializer (initial-state-value type->fields object-fields)
         name->coordinate (->> (map vector object-fields (range))
+                              ;; object fields come last in the state's object array,
+                              ;; and are also sorted alphabetically
                               (reduce (fn [m [field index]]
                                         (assoc m field [nil (+ (count type->fields) index)]))
                                       (coordinate-map type->fields)))
