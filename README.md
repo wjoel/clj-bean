@@ -2,9 +2,8 @@
 
 The better way to create JavaBeans from Clojure.
 
-A tiny library to create standards compliant JavaBeans with good performance
-and a small footprint. Supports primitive types and has the API you always
-wanted.
+A tiny library to create standards compliant JavaBeans with good performance.
+Supports primitive types and has the API you always wanted.
 
 ## Usage
 
