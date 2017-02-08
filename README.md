@@ -24,6 +24,11 @@ Supports primitive types and has the API you always wanted.
    [boolean isTalk]])
 ```
 
+[Get it from Clojars](https://clojars.org/com.wjoel/clj-bean) with
+```clojure
+[com.wjoel/clj-bean "0.1.0"]
+```
+
 Note that you need to use an [AOT-compiled namespace](https://clojure.org/reference/compilation)
 with `defbean` to generate the necessary Java class files.
 
