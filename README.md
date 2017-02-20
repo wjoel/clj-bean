@@ -16,12 +16,12 @@ Supports primitive types and has the API you always wanted.
    [String user]
    [long byteDiff]
    [String summary]
-   [boolean isMinor]
-   [boolean isNew]
-   [boolean isUnpatrolled]
-   [boolean isBotEdit]
-   [boolean isSpecial]
-   [boolean isTalk]])
+   [boolean minor]
+   [boolean new]
+   [boolean unpatrolled]
+   [boolean botEdit]
+   [boolean special]
+   [boolean talk]])
 ```
 
 [Get it from Clojars](https://clojars.org/com.wjoel/clj-bean) with
