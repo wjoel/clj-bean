@@ -13,6 +13,11 @@
   (let [s (name sym)]
     (str (.toUpperCase (subs s 0 1)) (subs s 1))))
 
+(defn type->getter-prefix [type]
+  (if (= type 'boolean)
+    "is"
+    "get"))
+
 (defn tagged-sym
   "Returns a symbol with the given sym-name and :tag in metadata set to tag-value"
   [sym-name tag-value]
@@ -20,8 +25,9 @@
 
 (defn typed-field->declarations
   [[type name]]
-  (let [sym-name (sym->upcase-1-str name)]
-    `([~(symbol (str "get" sym-name)) [] ~type]
+  (let [sym-name (sym->upcase-1-str name)
+        ]
+    `([~(symbol (str (type->getter-prefix type) sym-name)) [] ~type]
       [~(symbol (str "set" sym-name)) [~type] ~(symbol "void")])))
 
 (defn typed-field->accessors
@@ -33,7 +39,7 @@
         this-sym (tagged-sym "this" class-name)
         state-sym (tagged-sym "state" 'objects)
         array-sym (tagged-sym "type-array" (t/array type))]
-    `((defn ~(symbol (str prefix "get" sym-name)) [~this-sym]
+    `((defn ~(symbol (str prefix (type->getter-prefix type) sym-name)) [~this-sym]
         (let [~state-sym (.state ~this-sym)
               ~@(when-not object?
                   [array-sym (list `aget state-sym type-array-index)])]

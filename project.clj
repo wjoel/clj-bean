@@ -1,4 +1,4 @@
-(defproject com.wjoel/clj-bean "0.1.0"
+(defproject com.wjoel/clj-bean "0.2.0"
   :description "A better way to create JavaBeans from Clojure"
   :url "https://github.com/wjoel/clj-bean"
   :license {:name "MIT License"

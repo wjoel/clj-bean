@@ -14,9 +14,9 @@
     (is (= '([getByteDiff [] Long]
              [setByteDiff [Long] void])
            (typed-field->declarations '[Long byteDiff])))
-    (is (= '([getIsOwner [] boolean]
-             [setIsOwner [boolean] void])
-           (typed-field->declarations '[boolean isOwner])))
+    (is (= '([isOwner [] boolean]
+             [setOwner [boolean] void])
+           (typed-field->declarations '[boolean owner])))
     (is (= '([getTimestamp [] long]
              [setTimestamp [long] void])
            (typed-field->declarations '[long timestamp])))))
@@ -41,6 +41,15 @@
                                   type-array (clojure.core/aget state 1)]
                  (clojure.core/aset type-array 2 byteDiff))))
            (typed-field->accessors '[Long byteDiff] "com.wjoel.bean.edit" [1 2])))
+    (is (= '((clojure.core/defn edit-isOwner [this]
+               (clojure.core/let [state (.state this)
+                                  type-array (clojure.core/aget state 1)]
+                 (clojure.core/aget type-array 2)))
+             (clojure.core/defn edit-setOwner [this owner]
+               (clojure.core/let [state (.state this)
+                                  type-array (clojure.core/aget state 1)]
+                 (clojure.core/aset type-array 2 owner))))
+           (typed-field->accessors '[boolean owner] "com.wjoel.bean.edit" [1 2])))
     (is (= '((clojure.core/defn edit-getChannel [this]
                (clojure.core/let [state (.state this)]
                  (clojure.core/aget state 3)))
