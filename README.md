@@ -26,7 +26,7 @@ Supports primitive types and has the API you always wanted.
 
 [Get it from Clojars](https://clojars.org/com.wjoel/clj-bean) with
 ```clojure
-[com.wjoel/clj-bean "0.1.0"]
+[com.wjoel/clj-bean "0.2.0"]
 ```
 
 Note that you need to use an [AOT-compiled namespace](https://clojure.org/reference/compilation)
