@@ -11,6 +11,9 @@
                         "snapshots" {:url "https://oss.sonatype.org/content/repositories/snapshots/"
                                      :creds :gpg}}
   :scm {:url "git@github.com:wjoel/clj-bean.git"}
+  :classifiers {:javadoc {:source-paths ^:replace []
+                          :aot ^:replace []}
+                :sources {:aot ^:replace []}}
   :pom-addition [:developers [:developer
                               [:name "Joel Wilsson"]
                               [:url "https://wjoel.com"]
