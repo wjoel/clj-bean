@@ -114,6 +114,7 @@
                                                        (name->coordinate name)))
                              typed-fields)
         init-sym (symbol (str prefix "init"))
+        init-imp-sym (symbol (str prefix "init-imp"))
         null-constructor-values (map t/default-value types)]
     `(do
        (gen-class
@@ -126,9 +127,14 @@
                        [~@types] []}
         :methods [~@method-decls])
 
+       (defn- ~init-imp-sym
+         [~@names]
+         (object-array [~@initial-state-initializer]))
+
        (defn ~init-sym
-         ([] [[] (~init-sym ~@null-constructor-values)])
+         ([]
+          [[] (~init-imp-sym ~@null-constructor-values)])
          ([~@names]
-          [[] (object-array [~@initial-state-initializer])]))
+          [[] (~init-imp-sym ~@names)]))
 
        ~@method-impls)))

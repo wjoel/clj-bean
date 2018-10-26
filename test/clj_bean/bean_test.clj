@@ -23,3 +23,22 @@
       (.setUnpatrolled bean false)
       (is (= false (.isUnpatrolled bean))))
     (is (= 123 (.getByteDiff bean)))))
+
+(deftest javabean-empty-test
+  (let [bean (clj_bean.bean_test.Edit.)]
+    (do
+      (is (= 0 (.getTimestamp bean)))
+      (.setTimestamp bean 1485378350)
+      (is (= 1485378350 (.getTimestamp bean))))
+    (do
+      (is (= nil (.getDiffUrl bean)))
+      (.setDiffUrl bean "https://clojure.org")
+      (is (= "https://clojure.org" (.getDiffUrl bean))))
+    (do
+      (is (= false (.isUnpatrolled bean)))
+      (.setUnpatrolled bean true)
+      (is (= true (.isUnpatrolled bean))))
+    (do
+      (is (= 0 (.getByteDiff bean)))
+      (.setByteDiff bean 123)
+      (is (= 123 (.getByteDiff bean))))))
