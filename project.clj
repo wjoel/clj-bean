@@ -1,4 +1,4 @@
-(defproject com.wjoel/clj-bean "0.2.0"
+(defproject com.wjoel/clj-bean "0.2.1"
   :description "A better way to create JavaBeans from Clojure"
   :url "https://github.com/wjoel/clj-bean"
   :license {:name "MIT License"
@@ -10,7 +10,8 @@
                                     :creds :gpg}
                         "snapshots" {:url "https://oss.sonatype.org/content/repositories/snapshots/"
                                      :creds :gpg}}
-  :scm {:url "git@github.com:wjoel/clj-bean.git"}
+  :scm {:name "git"
+        :url "git@github.com:wjoel/clj-bean.git"}
   :classifiers {:javadoc {:source-paths ^:replace []
                           :aot ^:replace []}
                 :sources {:aot ^:replace []}}

@@ -25,10 +25,10 @@ Supports primitive types and has the API you always wanted.
 ```
 
 [Get it from Clojars](https://clojars.org/com.wjoel/clj-bean)
-or [The Central Repository](https://search.maven.org/#artifactdetails%7Ccom.wjoel%7Cclj-bean%7C0.2.0%7Cjar)
+or [The Central Repository](https://search.maven.org/#artifactdetails%7Ccom.wjoel%7Cclj-bean%7C0.2.1%7Cjar)
 at
 ```clojure
-[com.wjoel/clj-bean "0.2.0"]
+[com.wjoel/clj-bean "0.2.1"]
 ```
 
 Note that you need to use an [AOT-compiled namespace](https://clojure.org/reference/compilation)
